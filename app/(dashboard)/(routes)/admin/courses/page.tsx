@@ -1,32 +1,34 @@
-import { auth } from "@clerk/nextjs";
+"use client";
+
 import { redirect } from "next/navigation";
 
-import { db } from "@/lib/db";
 
 import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCourse } from "@/apis/page";
 
-const CoursesPage = async () => {
-  const { userId } = auth();
+const CoursesPage = () => {
+  const userId = "user_2YLwRzC2b7D5xLeVVUkSrdY4a2A";
+
+  const { data, isLoading } = useQuery<any>({
+    queryKey: ["courses"],
+    queryFn: fetchCourse,
+  });
+
+  if (isLoading) {
+    return <div>...Loading</div>;
+  }
 
   if (!userId) {
     return redirect("/");
   }
 
-  const courses = await db.course.findMany({
-    where: {
-      userId,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-
-  return ( 
+  return (
     <div className="p-6">
-      <DataTable columns={columns} data={courses} />
+      <DataTable columns={columns} data={data} />
     </div>
-   );
-}
- 
+  );
+};
+
 export default CoursesPage;

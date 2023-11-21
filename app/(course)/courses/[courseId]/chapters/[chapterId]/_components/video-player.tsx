@@ -16,7 +16,6 @@ interface VideoPlayerProps {
   chapterId: string;
   nextChapterId?: string;
   isLocked: boolean;
-  completeOnEnd: boolean;
   title: string;
 };
 
@@ -26,7 +25,6 @@ export const VideoPlayer = ({
   chapterId,
   nextChapterId,
   isLocked,
-  completeOnEnd,
   title,
 }: VideoPlayerProps) => {
   const [isReady, setIsReady] = useState(false);
@@ -35,7 +33,6 @@ export const VideoPlayer = ({
 
   const onEnd = async () => {
     try {
-      if (completeOnEnd) {
         await axios.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
           isCompleted: true,
         });
@@ -50,7 +47,6 @@ export const VideoPlayer = ({
         if (nextChapterId) {
           router.push(`/courses/${courseId}/chapters/${nextChapterId}`)
         }
-      }
     } catch {
       toast.error("Something went wrong");
     }

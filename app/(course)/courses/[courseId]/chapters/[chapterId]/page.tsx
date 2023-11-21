@@ -1,3 +1,5 @@
+'use client'
+
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { File } from "lucide-react";
@@ -10,48 +12,78 @@ import { Preview } from "@/components/preview";
 import { VideoPlayer } from "./_components/video-player";
 import { CourseEnrollButton } from "./_components/course-enroll-button";
 import { CourseProgressButton } from "./_components/course-progress-button";
+import { useQuery } from "@tanstack/react-query";
+import {
+  fetchChapter,
+  fetchCourseById,
+  fetchMuxVideoData,
+  fetchPurchase,
+} from "@/apis/page";
 
-const ChapterIdPage = async ({
-  params
+const ChapterIdPage = ({
+  params,
 }: {
-  params: { courseId: string; chapterId: string }
+  params: { courseId: string; chapterId: string };
 }) => {
-  const { userId } = auth();
-  
-  if (!userId) {
-    return redirect("/");
-  } 
+  // const { userId } = auth();
+  const userId = "user_2YOlq7jGyQw7axdgRg1NKBFUgUb";
+  // if (!userId) {
+  //   return redirect("/");
+  // }
 
-  const {
-    chapter,
-    course,
-    muxData,
-    attachments,
-    nextChapter,
-    userProgress,
-    purchase,
-  } = await getChapter({
-    userId,
-    chapterId: params.chapterId,
-    courseId: params.courseId,
+  // const {
+  //   chapter,
+  //   course,
+  //   muxData,
+  //   attachments,
+  //   nextChapter,
+  //   purchase,
+  // } = await getChapter({
+  //   userId,
+  //   chapterId: params.chapterId,
+  //   courseId: params.courseId,
+  // });
+
+  // if (!chapter || !course) {
+  //   return redirect("/")
+  // }
+
+  const { data: chapter, isLoading: chapterLoading } = useQuery<any>({
+    queryKey: [
+      "chapter",
+      {
+        courseId: params.courseId,
+        chapterId: params.chapterId,
+      },
+    ],
+    queryFn: () => fetchChapter(params.courseId, params.chapterId),
   });
 
-  if (!chapter || !course) {
-    return redirect("/")
+  const { data: course, isLoading: courseLoading } = useQuery<any>({
+    queryKey: ["course", params.courseId],
+    queryFn: () => fetchCourseById(params.courseId),
+  });
+
+  const { data: muxData, isLoading: muxLoading } = useQuery<any>({
+    queryKey: ["mux", params.chapterId],
+    queryFn: () => fetchMuxVideoData(params.chapterId),
+  });
+  const { data: purchase, isLoading: purchaseLoading } = useQuery<any>({
+    queryKey: ["purchase", { userId: userId, courseId: params.courseId }],
+    queryFn: () => fetchPurchase(userId, params.chapterId),
+  });
+
+  if (chapterLoading || courseLoading || muxLoading || purchaseLoading) {
+    return <div>...Loading</div>;
   }
+console.log(purchase)
+  const isLocked = !chapter.isFree 
+  // && !purchase
+  ;
+  console.log(isLocked)
 
-
-  const isLocked = !chapter.isFree && !purchase;
-  const completeOnEnd = !!purchase && !userProgress?.isCompleted;
-
-  return ( 
+  return (
     <div>
-      {userProgress?.isCompleted && (
-        <Banner
-          variant="success"
-          label="You already completed this chapter."
-        />
-      )}
       {isLocked && (
         <Banner
           variant="warning"
@@ -64,28 +96,27 @@ const ChapterIdPage = async ({
             chapterId={params.chapterId}
             title={chapter.title}
             courseId={params.courseId}
-            nextChapterId={nextChapter?.id}
+            // nextChapterId={nextChapter?.id}
+            nextChapterId={chapter?.id}
             playbackId={muxData?.playbackId!}
             isLocked={isLocked}
-            completeOnEnd={completeOnEnd}
           />
         </div>
         <div>
           <div className="p-4 flex flex-col md:flex-row items-center justify-between">
-            <h2 className="text-2xl font-semibold mb-2">
-              {chapter.title}
-            </h2>
-            {purchase ? (
-              <CourseProgressButton
-                chapterId={params.chapterId}
-                courseId={params.courseId}
-                nextChapterId={nextChapter?.id}
-                isCompleted={!!userProgress?.isCompleted}
-              />
+            <h2 className="text-2xl font-semibold mb-2">{chapter.title}</h2>
+            {!!purchase.courseId ? (
+              // <CourseProgressButton
+              //   chapterId={params.chapterId}
+              //   courseId={params.courseId}
+              //   nextChapterId={nextChapter?.id}
+              // />
+              <></>
             ) : (
               <CourseEnrollButton
                 courseId={params.courseId}
                 price={course.price!}
+                title= {course.title}
               />
             )}
           </div>
@@ -93,7 +124,7 @@ const ChapterIdPage = async ({
           <div>
             <Preview value={chapter.description!} />
           </div>
-          {!!attachments.length && (
+          {/* {!!attachments.length && (
             <>
               <Separator />
               <div className="p-4">
@@ -112,11 +143,11 @@ const ChapterIdPage = async ({
                 ))}
               </div>
             </>
-          )}
+          )} */}
         </div>
       </div>
     </div>
-   );
-}
- 
+  );
+};
+
 export default ChapterIdPage;

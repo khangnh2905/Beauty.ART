@@ -1,6 +1,6 @@
 "use client";
 
-import { redirect } from "next/navigation";``
+import { redirect } from "next/navigation";
 import { CheckCircle, Clock } from "lucide-react";
 
 import { getDashboardCourses } from "@/actions/get-dashboard-courses";
@@ -27,9 +27,8 @@ export default function Dashboard() {
     queryFn: fetchCourse,
   });
 
-
-  if(isLoading){
-    return <div>...Loading</div>
+  if (isLoading) {
+    return <div>...Loading</div>;
   }
 
   return (

@@ -3,17 +3,29 @@ import { create } from "zustand"
 
 type ModalType = "payment"
 
+type CourseCheckout = {
+    title: string,
+    courseId: string,
+    price: number
+}
+
+type ModalData = {
+    courseCheckout?: CourseCheckout
+}
+
 interface ModalStore {
+    data?:ModalData,
     type: ModalType | null,
     isOpen: boolean,
-    onOpen: (type: ModalType) => void;
+    onOpen: (type: ModalType, data: ModalData) => void;
     onClose: () => void
 }
 
 
 export const useModal = create<ModalStore>((set) => ({
     type: null,
+    data:{},
     isOpen: false,
-    onOpen: (type) => set({ isOpen: true, type }),
+    onOpen: (type, data={}) => set({ isOpen: true, type ,data}),
     onClose: () => set({ isOpen: false })
 }))

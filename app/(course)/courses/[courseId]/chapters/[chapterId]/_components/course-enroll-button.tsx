@@ -9,17 +9,20 @@ import { formatPrice } from "@/lib/format";
 import { useModal } from "@/hooks/use-modal";
 
 interface CourseEnrollButtonProps {
-  price: number;
+  title: string;
   courseId: string;
+  price: number;
 }
 
 export const CourseEnrollButton = ({
   price,
   courseId,
+  title
 }: CourseEnrollButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const {onOpen} = useModal();
+  const data = {price, courseId, title}  
 
   const onClick = () => {
     // try {
@@ -38,7 +41,7 @@ export const CourseEnrollButton = ({
 
   return (
     <Button
-      onClick={() => onOpen("payment")}
+      onClick={() => onOpen("payment", {courseCheckout: data})}
       disabled={isLoading}
       size="sm"
       className="w-full md:w-auto"

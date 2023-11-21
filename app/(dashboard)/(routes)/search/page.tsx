@@ -1,3 +1,5 @@
+'use client'
+
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
@@ -7,6 +9,8 @@ import { getCourses } from "@/actions/get-courses";
 import { CoursesList } from "@/components/courses-list";
 
 import { Categories } from "./_components/categories";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCategory, fetchCourse } from "@/apis/page";
 
 interface SearchPageProps {
   searchParams: {
@@ -15,25 +19,41 @@ interface SearchPageProps {
   }
 };
 
-const SearchPage = async ({
+const SearchPage =  ({
   searchParams
 }: SearchPageProps) => {
-  const { userId } = auth();
+  // const { userId } = auth();
 
-  if (!userId) {
-    return redirect("/");
+  // if (!userId) {
+  //   return redirect("/");
+  // }
+
+  // const categories = await db.category.findMany({
+  //   orderBy: {
+  //     name: "asc"
+  //   }
+  // });
+
+  const { data: courses, isLoading: coursesLoading } = useQuery<any>({
+    queryKey: ["courses"],
+    queryFn: fetchCourse,
+  });
+
+
+  const {data: categories , isLoading: categoriesLoading} = useQuery<any>({
+    queryKey: ["categories"],
+    queryFn : fetchCategory,
+  
+  })
+
+  if(coursesLoading || categoriesLoading){
+    return <div>...Loading</div>
   }
 
-  const categories = await db.category.findMany({
-    orderBy: {
-      name: "asc"
-    }
-  });
-
-  const courses = await getCourses({
-    userId,
-    ...searchParams,
-  });
+  // const courses = await getCourses({
+  //   userId,
+  //   ...searchParams,
+  // });
 
   return (
     <>
