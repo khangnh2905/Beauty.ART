@@ -16,7 +16,7 @@
           "description": "Test1",
           "videoUrl": "https://utfs.io/f/44336db2-e01e-4c90-93d5-b21e44b86ccc-4ni3wo.mp4",
           "isPublished": true,
-          "isFree":false,
+          "isFree": true,
           "position": 1
         },
         {
@@ -25,11 +25,10 @@
           "description": "Test2",
           "videoUrl": "https://utfs.io/f/44336db2-e01e-4c90-93d5-b21e44b86ccc-4ni3wo.mp4",
           "isPublished": true,
-          "isFree":false,
+          "isFree": true,
           "position": 2
         }
       ],
-
       "attachments": [
         {
           "id": "att1",
@@ -46,7 +45,7 @@
       "title": "TestCourse2",
       "description": "This course will teach you the fundamentals of web development including HTML, CSS and JavaScript. You will build multiple projects and have a fully-functioning website by the end.",
       "imageUrl": "https://utfs.io/f/308a63e4-ae27-4993-b7d5-8740ea7c690e-9dfqhw.webp",
-      "price": 200.000,
+      "price": 200,
       "isPublished": true,
       "categoryId": "2",
       "chapters": [
@@ -59,7 +58,6 @@
           "position": 1
         }
       ],
-
       "attachments": [
         {
           "id": "att1",
@@ -69,55 +67,90 @@
       ],
       "createdAt": "2021-01-01T00:00:00.000Z",
       "updatedAt": "2021-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "21df9eca-2575-4286-a16b-0a865356b03f",
+      "title": "test",
+      "description": "hello world",
+      "imageUrl": "",
+      "price": 0,
+      "categoryId": "",
+      "chapters": [],
+      "attachments": []
     }
   ],
   "categories": [
-    { "name": "Computer Science", "id": "1" },
-    { "name": "Music", "id": "2" },
-    { "name": "Fitness", "id": "3" },
-    { "name": "Photography", "id": "4" },
-    { "name": "Accounting", "id": "5" },
-    { "name": "Engineering", "id": "6" },
-    { "name": "Filming", "id": "7" }
+    {
+      "name": "Computer Science",
+      "id": "1"
+    },
+    {
+      "name": "Music",
+      "id": "2"
+    },
+    {
+      "name": "Fitness",
+      "id": "3"
+    },
+    {
+      "name": "Photography",
+      "id": "4"
+    },
+    {
+      "name": "Accounting",
+      "id": "5"
+    },
+    {
+      "name": "Engineering",
+      "id": "6"
+    },
+    {
+      "name": "Filming",
+      "id": "7"
+    }
   ],
   "chapters": [
     {
       "id": "edf3f979-a6d8-481d-be71-8bfb5add36f4",
-      "courseId":"4256980c-3775-4504-b33a-248061b51a52",
-      "title":"chap1",
+      "courseId": "4256980c-3775-4504-b33a-248061b51a52",
+      "title": "chap1",
       "description": "description",
       "position": 1,
       "isPublished": true,
-      "isFree":false,
+      "isFree": false,
       "videoUrl": "https://utfs.io/f/44336db2-e01e-4c90-93d5-b21e44b86ccc-4ni3wo.mp4"
     },
     {
       "id": "2",
-      "courseId":"4256980c-3775-4504-b33a-248061b51a52",
+      "courseId": "4256980c-3775-4504-b33a-248061b51a52",
       "title": "Test2",
       "description": "Test2",
       "videoUrl": "https://utfs.io/f/44336db2-e01e-4c90-93d5-b21e44b86ccc-4ni3wo.mp4",
       "isPublished": true,
-      "isFree":false,
+      "isFree": false,
       "position": 2
     },
     {
       "id": "3",
-      "courseId":"22222222222222222222",
+      "courseId": "22222222222222222222",
       "title": "Test2",
       "description": "Test2",
       "videoUrl": "https://utfs.io/f/44336db2-e01e-4c90-93d5-b21e44b86ccc-4ni3wo.mp4",
       "isPublished": true,
-      "isFree":false,
+      "isFree": false,
       "position": 1
     }
   ],
   "muxData": {
-    "chapterId":"edf3f979-a6d8-481d-be71-8bfb5add36f4",
+    "chapterId": "edf3f979-a6d8-481d-be71-8bfb5add36f4",
     "playbackId": "02XZpOCqxfHBFBB238iLM1XXMW02Vn00AOdLBbeYbcevR8"
   },
-  "purchase": {
-
+  "purchase": {},
+  "user": {
+    "email": "vinh@gmail.com",
+    "password": "vinh",
+    "userId": "user_2YOlq7jGyQw7axdgRg1NKBFUgUb",
+    "image": "url",
+    "name": "vinh"
   }
 }
-

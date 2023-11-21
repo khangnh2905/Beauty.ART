@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 import PaymentModal from '../modals/payment-modal'
+import LogInModal from '../modals/login-modal'
+import SignUpModal from '../modals/signUp-modal'
 
 const StoreProvider = () => {
 
@@ -9,7 +11,7 @@ const StoreProvider = () => {
 
     useEffect(() => {
         setMounted(true)
-    })
+    },[])
 
     if (!mounted) {
         return null
@@ -18,6 +20,8 @@ const StoreProvider = () => {
     return (
         <>
             <PaymentModal />
+            <LogInModal/>
+            <SignUpModal/>
         </>
     )
 }

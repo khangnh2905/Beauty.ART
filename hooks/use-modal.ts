@@ -1,7 +1,7 @@
 
 import { create } from "zustand"
 
-type ModalType = "payment"
+type ModalType = "payment" | "signIn" | "signUp"
 
 type CourseCheckout = {
     title: string,

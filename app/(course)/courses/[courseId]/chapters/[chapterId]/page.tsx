@@ -80,7 +80,7 @@ console.log(purchase)
   const isLocked = !chapter.isFree 
   // && !purchase
   ;
-  console.log(isLocked)
+  console.log(chapter.isFree)
 
   return (
     <div>

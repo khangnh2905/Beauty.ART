@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchCourse } from "@/apis/page";
 
 const CoursesPage = () => {
-  const userId = "user_2YLwRzC2b7D5xLeVVUkSrdY4a2A";
+  const userId = "user_2YOlq7jGyQw7axdgRg1NKBFUgUb";
 
   const { data, isLoading } = useQuery<any>({
     queryKey: ["courses"],

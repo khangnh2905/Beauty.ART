@@ -26,7 +26,6 @@ export const CategoryItem = ({
   const searchParams = useSearchParams();
 
   const currentCategoryId = searchParams.get("categoryId");const currentTitle = searchParams.get("title");
-
   const isSelected = currentCategoryId === value;
 
   const onClick = () => {
@@ -37,6 +36,14 @@ export const CategoryItem = ({
         categoryId: isSelected ? null : value,
       }
     }, { skipNull: true, skipEmptyString: true });
+
+console.log(url)
+
+//get du lieu dc filter => list course  
+// lc/search
+
+// 2params => categoryId (category)  ,  title => course
+
 
     router.push(url);
   };
