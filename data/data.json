@@ -1,0 +1,59 @@
+{
+  "courses": [
+    {
+      "id": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+      "userId": "e61f8ae7-31b4-4c38-ad58-cf95421a7cd1",
+      "title": "Introduction to Web Development",
+      "description": "This course will teach you the fundamentals of web development including HTML, CSS and JavaScript. You will build multiple projects and have a fully-functioning website by the end.",
+      "imageUrl": "https://utfs.io/f/308a63e4-ae27-4993-b7d5-8740ea7c690e-9dfqhw.webp",
+      "price": 49.99,
+      "isPublished": true,
+      "categoryId": "web-dev",
+      "chapters": [
+        {
+          "id": "1",
+          "title": "Les1",
+          "description": "Test1",
+          "videoUrl": "url"
+        }
+      ],
+
+      "attachments": [
+        {
+          "id": "att1",
+          "name": "att test",
+          "url": "url test"
+        }
+      ],
+      "createdAt": "2021-01-01T00:00:00.000Z",
+      "updatedAt": "2021-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "9b1deb4d-3b7d-4bad-9bd32423424423",
+      "userId": "e61f8ae7-31b4-4c38-ad58-cf95421a7cd1",
+      "title": "Hello World",
+      "description": "This course will teach you the fundamentals of web development including HTML, CSS and JavaScript. You will build multiple projects and have a fully-functioning website by the end.",
+      "imageUrl": "https://utfs.io/f/308a63e4-ae27-4993-b7d5-8740ea7c690e-9dfqhw.webp",
+      "price": 49.99,
+      "isPublished": true,
+      "categoryId": "web-dev",
+      "chapters": [
+        {
+          "id": "2",
+          "title": "Les1",
+          "description": "Test1",
+          "videoUrl": "url"
+        }
+      ],
+      "attachments": [
+        {
+          "id": "att12",
+          "name": "att test",
+          "url": "url test"
+        }
+      ],
+      "createdAt": "2021-01-01T00:00:00.000Z",
+      "updatedAt": "2021-01-01T00:00:00.000Z"
+    }
+  ]
+}
