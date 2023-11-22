@@ -13,7 +13,7 @@ import { ChapterDescriptionForm } from "./_components/chapter-description-form";
 import { ChapterAccessForm } from "./_components/chapter-access-form";
 import { ChapterVideoForm } from "./_components/chapter-video-form";
 import { ChapterActions } from "./_components/chapter-actions";
-import { fetchChapter } from "@/apis/page";
+import { fetchChapter, fetchChapterById } from "@/apis/page";
 import { useQuery } from "@tanstack/react-query";
 
 const ChapterIdPage = ({
@@ -25,13 +25,12 @@ const ChapterIdPage = ({
     queryKey: [
       "chapter",
       {
-        courseId: params.courseId,
         chapterId: params.chapterId,
       },
     ],
-    queryFn: () => fetchChapter(params.courseId, params.chapterId),
+    queryFn: () => fetchChapterById(params.chapterId),
   });
-
+console.log(chapter)
   if(chapterLoading){
     return <div>...Loading</div>
   }

@@ -18,11 +18,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { ChapterFormType } from "@/type";
 
 interface ChapterTitleFormProps {
-  initialData: {
-    title: string;
-  };
+  initialData: ChapterFormType
   courseId: string;
   chapterId: string;
 };
@@ -48,10 +47,12 @@ export const ChapterTitleForm = ({
   });
 
   const { isSubmitting, isValid } = form.formState;
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
+      const title = values.title
+      const updateValue = {...initialData, title}
+
+      await axios.put(`https://localhost:7129/api/Chapter?id=${chapterId}`, updateValue);
       toast.success("Chapter updated");
       toggleEdit();
       router.refresh();

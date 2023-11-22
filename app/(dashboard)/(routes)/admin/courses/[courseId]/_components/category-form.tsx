@@ -21,9 +21,11 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { Combobox } from "@/components/ui/combobox";
+import { useQuery } from "@tanstack/react-query";
+import { CourseFormType } from "@/type";
 
 interface CategoryFormProps {
-  initialData: Course;
+  initialData: CourseFormType
   courseId: string;
   options: { label: string; value: string; }[];
 };
@@ -37,6 +39,7 @@ export const CategoryForm = ({
   courseId,
   options,
 }: CategoryFormProps) => {
+  const {refetch} = useQuery({ queryKey: ["course"]})
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -54,10 +57,14 @@ export const CategoryForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+      const category = values.categoryId
+      const updateValue = {...initialData, category}
+
+      await axios.put(`https://localhost:7129/Course/Update?id=${courseId}`, updateValue);
       toast.success("Course updated");
       toggleEdit();
       router.refresh();
+      await refetch()
     } catch {
       toast.error("Something went wrong");
     }

@@ -21,7 +21,7 @@ interface ChaptersListProps {
 
 export const ChaptersList = ({
   items,
-  onReorder,
+  // onReorder,
   onEdit
 }: ChaptersListProps) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -54,7 +54,7 @@ export const ChaptersList = ({
       position: items.findIndex((item) => item.id === chapter.id)
     }));
 
-    onReorder(bulkUpdateData);
+    // onReorder(bulkUpdateData);
   }
 
   if (!isMounted) {

@@ -8,7 +8,6 @@ import { Pencil } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Course } from "@prisma/client";
 
 import {
   Form,
@@ -20,14 +19,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
+import { useQuery } from "@tanstack/react-query";
+import { CourseFormType } from "@/type";
+
 
 interface DescriptionFormProps {
-  initialData: Course;
+  initialData: CourseFormType;
   courseId: string;
 };
 
 const formSchema = z.object({
-  description: z.string().min(1, {
+  courseDescription: z.string().min(1, {
     message: "Description is required",
   }),
 });
@@ -36,6 +38,8 @@ export const DescriptionForm = ({
   initialData,
   courseId
 }: DescriptionFormProps) => {
+  const { refetch } = useQuery({ queryKey: ["course"], });
+
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -45,15 +49,23 @@ export const DescriptionForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData?.description || ""
+      courseDescription: initialData?.courseDescription || ""
     },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+
+      const courseDescription = values.courseDescription
+
+      const updateValue = { ...initialData, courseDescription }
+
+
+      await axios.put(`https://localhost:7129/Course/Update?id=${courseId}`, updateValue);
+      await refetch()
       toast.success("Course updated");
       toggleEdit();
       router.refresh();
@@ -80,9 +92,9 @@ export const DescriptionForm = ({
       {!isEditing && (
         <p className={cn(
           "text-sm mt-2",
-          !initialData.description && "text-slate-500 italic"
+          !initialData.courseDescription && "text-slate-500 italic"
         )}>
-          {initialData.description || "No description"}
+          {initialData.courseDescription || "No description"}
         </p>
       )}
       {isEditing && (
@@ -93,7 +105,7 @@ export const DescriptionForm = ({
           >
             <FormField
               control={form.control}
-              name="description"
+              name="courseDescription"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>

@@ -21,9 +21,11 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { formatPrice } from "@/lib/format";
+import { useQuery } from "@tanstack/react-query";
+import { CourseFormType } from "@/type";
 
 interface PriceFormProps {
-  initialData: Course;
+  initialData: CourseFormType
   courseId: string;
 };
 
@@ -35,8 +37,9 @@ export const PriceForm = ({
   initialData,
   courseId
 }: PriceFormProps) => {
+  const {refetch} = useQuery({ queryKey: ["course"]})
   const [isEditing, setIsEditing] = useState(false);
-
+ 
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const router = useRouter();
@@ -52,10 +55,14 @@ export const PriceForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+      const price = values.price
+      const updateValue = {...initialData, price}
+
+      await axios.put(`https://localhost:7129/Course/Update?id=${courseId}`, updateValue);
       toast.success("Course updated");
       toggleEdit();
       router.refresh();
+      await refetch()
     } catch {
       toast.error("Something went wrong");
     }

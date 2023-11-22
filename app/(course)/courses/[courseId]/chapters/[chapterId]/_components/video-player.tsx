@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { useConfettiStore } from "@/hooks/use-confetti-store";
 
 interface VideoPlayerProps {
-  playbackId: string;
+  playbackId?: string;
   courseId: string;
   chapterId: string;
   nextChapterId?: string;

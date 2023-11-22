@@ -19,6 +19,7 @@ interface CourseSidebarProps {
   };
 };
 
+
 export const CourseSidebar =  ({
   course,
 }: CourseSidebarProps) => {
@@ -27,10 +28,13 @@ export const CourseSidebar =  ({
   // if (!userId) {
   //   return redirect("/");
   // }
-  const { data: purchase, isLoading: purchaseLoading } = useQuery<any>({
-    queryKey: ["purchase", { userId: userId, courseId: course.id }],
-    queryFn: () => fetchPurchase(userId,course.id),
-  });
+
+  console.log(course)
+  const purchaseFakeCourse = true;
+  // const { data: purchase, isLoading: purchaseLoading } = useQuery<any>({
+  //   queryKey: ["purchase", { userId: userId, courseId: course.id }],
+  //   queryFn: () => fetchPurchase(userId,course.id),
+  // });
   // const purchase = await db.purchase.findUnique({
   //   where: {
   //     userId_courseId: {
@@ -40,17 +44,16 @@ export const CourseSidebar =  ({
   //   }
   // });
 
-  if(purchaseLoading){
-    return <div>...Loading</div>
-  }
-// console.log(course)
+  // if(purchaseLoading){
+  //   return <div>...Loading</div>
+  // }
   return (
     <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="p-8 flex flex-col border-b">
         <h1 className="font-semibold">
           {course.title}
         </h1>
-        {purchase && (
+        {purchaseFakeCourse && (
           // <div className="mt-10">
           //   <CourseProgress
           //     variant="success"

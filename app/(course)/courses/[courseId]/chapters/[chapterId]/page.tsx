@@ -15,19 +15,22 @@ import { CourseProgressButton } from "./_components/course-progress-button";
 import { useQuery } from "@tanstack/react-query";
 import {
   fetchChapter,
+  fetchChapterById,
   fetchCourseById,
   fetchMuxVideoData,
+  // fetchMuxVideoData,
   fetchPurchase,
 } from "@/apis/page";
+import { useAuth } from "@/context/authContext";
 
 const ChapterIdPage = ({
   params,
 }: {
   params: { courseId: string; chapterId: string };
 }) => {
-  // const { userId } = auth();
-  const userId = "user_2YOlq7jGyQw7axdgRg1NKBFUgUb";
-  // if (!userId) {
+  // const { user?id } = auth();
+  const {user} = useAuth();
+  // if (!user?id) {
   //   return redirect("/");
   // }
 
@@ -39,7 +42,7 @@ const ChapterIdPage = ({
   //   nextChapter,
   //   purchase,
   // } = await getChapter({
-  //   userId,
+  //   user?id,
   //   chapterId: params.chapterId,
   //   courseId: params.courseId,
   // });
@@ -52,11 +55,10 @@ const ChapterIdPage = ({
     queryKey: [
       "chapter",
       {
-        courseId: params.courseId,
         chapterId: params.chapterId,
       },
     ],
-    queryFn: () => fetchChapter(params.courseId, params.chapterId),
+    queryFn: () => fetchChapterById(params.chapterId),
   });
 
   const { data: course, isLoading: courseLoading } = useQuery<any>({
@@ -64,24 +66,24 @@ const ChapterIdPage = ({
     queryFn: () => fetchCourseById(params.courseId),
   });
 
-  const { data: muxData, isLoading: muxLoading } = useQuery<any>({
-    queryKey: ["mux", params.chapterId],
-    queryFn: () => fetchMuxVideoData(params.chapterId),
-  });
-  const { data: purchase, isLoading: purchaseLoading } = useQuery<any>({
-    queryKey: ["purchase", { userId: userId, courseId: params.courseId }],
-    queryFn: () => fetchPurchase(userId, params.chapterId),
-  });
-
-  if (chapterLoading || courseLoading || muxLoading || purchaseLoading) {
+  // const { data: muxData, isLoading: muxLoading } = useQuery<any>({
+  //   queryKey: ["mux", params.chapterId],
+  //   queryFn: () => fetchMuxVideoData(params.chapterId),
+  // });
+  // const { data: purchase, isLoading: purchaseLoading } = useQuery<any>({
+  //   queryKey: ["purchase", { user?id: user?id, courseId: params.courseId }],
+  //   queryFn: () => fetchPurchase(user?id, params.chapterId),
+  // });
+  ////  muxLoading ||
+  if (chapterLoading || courseLoading) {
     return <div>...Loading</div>;
   }
-console.log(purchase)
-  const isLocked = !chapter.isFree 
-  // && !purchase
-  ;
+  // console.log(purchase)
+  const isLocked = !chapter.isFree
+    // && !purchase
+    ;
   console.log(chapter.isFree)
-
+  const puscharFakeCourse = true;
   return (
     <div>
       {isLocked && (
@@ -98,27 +100,30 @@ console.log(purchase)
             courseId={params.courseId}
             // nextChapterId={nextChapter?.id}
             nextChapterId={chapter?.id}
-            playbackId={muxData?.playbackId!}
+            // playbackId={muxData?.playbackId!}
             isLocked={isLocked}
           />
         </div>
         <div>
           <div className="p-4 flex flex-col md:flex-row items-center justify-between">
             <h2 className="text-2xl font-semibold mb-2">{chapter.title}</h2>
-            {!!purchase.courseId ? (
-              // <CourseProgressButton
-              //   chapterId={params.chapterId}
-              //   courseId={params.courseId}
-              //   nextChapterId={nextChapter?.id}
-              // />
-              <></>
-            ) : (
-              <CourseEnrollButton
-                courseId={params.courseId}
-                price={course.price!}
-                title= {course.title}
-              />
-            )}
+            {
+              // !!purchase.courseId
+              !!puscharFakeCourse
+                ? (
+                  // <CourseProgressButton
+                  //   chapterId={params.chapterId}
+                  //   courseId={params.courseId}
+                  //   nextChapterId={nextChapter?.id}
+                  // />
+                  <></>
+                ) : (
+                  <CourseEnrollButton
+                    courseId={params.courseId}
+                    price={course.price!}
+                    title={course.title}
+                  />
+                )}
           </div>
           <Separator />
           <div>

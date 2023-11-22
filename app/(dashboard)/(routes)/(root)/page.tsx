@@ -9,13 +9,16 @@ import { CoursesList } from "@/components/courses-list";
 import { InfoCard } from "./_components/info-card";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCourse } from "@/apis/page";
+import { useAuth } from "@/context/authContext";
 
 export default function Dashboard() {
   // const { userId } = auth();
 
-  // if (!userId) {
-  //   return redirect("/");
-  // }
+  const {user} = useAuth();
+
+  if (!user?.id) {
+    return redirect("/");
+  }
 
   // const {
   //   completedCourses,

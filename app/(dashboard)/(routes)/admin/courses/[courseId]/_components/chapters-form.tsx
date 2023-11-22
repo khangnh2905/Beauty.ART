@@ -22,14 +22,16 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 
 import { ChaptersList } from "./chapters-list";
-
+import { CourseFormType } from "@/type";
+import { useQuery } from "@tanstack/react-query";
+import { v4 as uuidv4 } from 'uuid';
 interface ChaptersFormProps {
-  initialData: Course & { chapters: Chapter[] };
+  initialData: CourseFormType;
   courseId: string;
 };
 
 const formSchema = z.object({
-  title: z.string().min(1),
+  title: z.string().min(1)
 });
 
 export const ChaptersForm = ({
@@ -38,7 +40,7 @@ export const ChaptersForm = ({
 }: ChaptersFormProps) => {
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-
+  const {refetch} = useQuery({ queryKey: ["course"]})
   const toggleCreating = () => {
     setIsCreating((current) => !current);
   }
@@ -55,8 +57,12 @@ export const ChaptersForm = ({
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const id = uuidv4()
+    // test data
+    const valueTest = { courseId: courseId, title: values.title, id, Description: "test", videoUrl: "https://utfs.io/f/44336db2-e01e-4c90-93d5-b21e44b86ccc-4ni3wo.mp4" }
     try {
-      await axios.post(`/api/courses/${courseId}/chapters`, values);
+
+      await axios.post(`https://localhost:7129/api/Chapter`, valueTest);
       toast.success("Chapter created");
       toggleCreating();
       router.refresh();
@@ -139,9 +145,9 @@ export const ChaptersForm = ({
       {!isCreating && (
         <div className={cn(
           "text-sm mt-2",
-          !initialData.chapters.length && "text-slate-500 italic"
+          !initialData.chapters?.length && "text-slate-500 italic"
         )}>
-          {!initialData.chapters.length && "No chapters"}
+          {!initialData.chapters?.length && "No chapters"}
           <ChaptersList
             onEdit={onEdit}
             onReorder={onReorder}

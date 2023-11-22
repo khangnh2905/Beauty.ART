@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   Form,
@@ -38,8 +39,14 @@ const CreatePage = () => {
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+
+    const id = uuidv4()
+
+    const title = values.title;
+    const postValue = { title, categoryId: "1", courseDescription: "", imageUrl: "", isPublish: false, price: 0 , id}
+
     try {
-      const response = await axios.post("/api/courses", values);
+      const response = await axios.post("https://localhost:7129/Course/Create", postValue);
       router.push(`/admin/courses/${response.data.id}`);
       toast.success("Course created");
     } catch {
@@ -47,7 +54,7 @@ const CreatePage = () => {
     }
   }
 
-  return ( 
+  return (
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
         <h1 className="text-2xl">
@@ -103,7 +110,7 @@ const CreatePage = () => {
         </Form>
       </div>
     </div>
-   );
+  );
 }
- 
+
 export default CreatePage;

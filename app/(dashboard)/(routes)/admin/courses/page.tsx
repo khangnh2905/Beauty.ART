@@ -7,9 +7,10 @@ import { DataTable } from "./_components/data-table";
 import { columns } from "./_components/columns";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCourse } from "@/apis/page";
+import { useAuth } from "@/context/authContext";
 
 const CoursesPage = () => {
-  const userId = "user_2YOlq7jGyQw7axdgRg1NKBFUgUb";
+  const {user} = useAuth();
 
   const { data, isLoading } = useQuery<any>({
     queryKey: ["courses"],
@@ -19,8 +20,7 @@ const CoursesPage = () => {
   if (isLoading) {
     return <div>...Loading</div>;
   }
-
-  if (!userId) {
+  if (!user?.id) {
     return redirect("/");
   }
 

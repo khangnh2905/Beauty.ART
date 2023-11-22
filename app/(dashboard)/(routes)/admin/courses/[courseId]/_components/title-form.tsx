@@ -18,11 +18,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { CourseFormType } from "@/type";
+import { useQuery } from "@tanstack/react-query";
 
 interface TitleFormProps {
-  initialData: {
-    title: string;
-  };
+  initialData: CourseFormType
   courseId: string;
 };
 
@@ -36,6 +36,7 @@ export const TitleForm = ({
   initialData,
   courseId
 }: TitleFormProps) => {
+  const {refetch} = useQuery({ queryKey: ["course"]})
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -44,17 +45,24 @@ export const TitleForm = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: {
+      title: initialData?.title || ""
+    },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+
+      const title = values.title
+      const updateValue = {...initialData, title}
+
+      await axios.put(`https://localhost:7129/Course/Update?id=${courseId}`, updateValue);
       toast.success("Course updated");
       toggleEdit();
       router.refresh();
+      await refetch()
     } catch {
       toast.error("Something went wrong");
     }

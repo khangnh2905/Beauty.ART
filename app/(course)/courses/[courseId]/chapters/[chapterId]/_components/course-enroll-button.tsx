@@ -38,7 +38,7 @@ export const CourseEnrollButton = ({
     //   setIsLoading(false);
     // }
   }
-
+  
   return (
     <Button
       onClick={() => onOpen("payment", {courseCheckout: data})}

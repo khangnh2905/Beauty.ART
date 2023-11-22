@@ -31,13 +31,13 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { useModal } from "@/hooks/use-modal";
 // nextauth
-
+import { v4 as uuidv4 } from 'uuid';
 
 export const SignUpSchema = z.object({
-    name: z.string().min(2),
-    password: z.string().min(2),
-    email: z.string().email(),
-  });
+  name: z.string().min(2),
+  password: z.string().min(2),
+  email: z.string().email(),
+});
 
 const SignUpModal = () => {
   const { isOpen, onOpen, onClose, type } = useModal();
@@ -53,14 +53,24 @@ const SignUpModal = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof SignUpSchema>) => {
+
+    const id = uuidv4()
+
+    const phone = "";
+    const address = ""
+    const name = values.name;
+    const email = values.email;
+    const password = values.password
+    const valueForm = { address, phone, name, email, password,id }
+
     try {
-      await axios.post("http://localhost:3001/user", values);
-    //   toast.success("Đăng kí thành công");
+      await axios.post("https://localhost:7129/User/Register", valueForm);
+      //   toast.success("Đăng kí thành công");
       form.reset();
       onOpen("signIn", {});
     } catch (error) {
       console.log(error);
-    //   toast.error("Đăng kí thất bại");
+      //   toast.error("Đăng kí thất bại");
     }
   };
 

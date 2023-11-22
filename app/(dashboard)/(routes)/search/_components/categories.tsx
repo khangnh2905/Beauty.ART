@@ -8,8 +8,10 @@ import {
   FcMusic,
   FcOldTimeCamera,
   FcSalesPerformance,
-  FcSportsMode
+  FcSportsMode,
 } from "react-icons/fc";
+
+import {MdOutlineDraw } from "react-icons/md"
 import { IconType } from "react-icons";
 
 import { CategoryItem } from "./category-item";
@@ -19,18 +21,16 @@ interface CategoriesProps {
 }
 
 const iconMap: Record<Category["name"], IconType> = {
-  "Music": FcMusic,
-  "Photography": FcOldTimeCamera,
-  "Fitness": FcSportsMode,
-  "Accounting": FcSalesPerformance,
-  "Computer Science": FcMultipleDevices,
-  "Filming": FcFilmReel,
-  "Engineering": FcEngineering,
+  "Chân Dung": FcMusic,
+  "Pha màu": FcOldTimeCamera,
+  "Tô Tượng ": FcSportsMode,
+  "Vẽ Cảnh": MdOutlineDraw,
 };
 
 export const Categories = ({
   items,
 }: CategoriesProps) => {
+
   return (
     <div className="flex items-center gap-x-2 overflow-x-auto pb-2">
       {items.map((item) => (

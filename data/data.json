@@ -148,9 +148,6 @@
   "purchase": {},
   "user": {
     "email": "vinh@gmail.com",
-    "password": "vinh",
-    "userId": "user_2YOlq7jGyQw7axdgRg1NKBFUgUb",
-    "image": "url",
-    "name": "vinh"
+    "password": "vinh"
   }
 }

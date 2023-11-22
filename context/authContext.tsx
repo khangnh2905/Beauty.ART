@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { createContext, useContext, useState } from "react";
 
 export type User = {
-    userId: string;
-    username: string;
+    id: string;
+    name: string;
     email: string;
     image: string;
     // fullName: string;
@@ -26,14 +26,14 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState(() => {
-        const user = window.localStorage.getItem("user");
-        return user ? JSON.parse(user) : null;
+            const user = window.localStorage.getItem("user");
+            return user ? JSON.parse(user) : null; 
     });
     const router = useRouter();
     const login = async (email: string, password: string) => {
         try {
             const response = await fetch(
-                "http://localhost:3001/user",
+                "https://localhost:7129/User/Login",
                 {
                     method: "POST",
                     headers: {
@@ -44,8 +44,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             );
             if (response.ok) {
                 const user = await response.json();
-                console.log(user)
-                setUser(user);
+                console.log(user.userView)
+                setUser(user.userView);
                 window.localStorage.setItem("user", JSON.stringify(user));
                 // toast.success("Đăng nhập thành công")
                 router.push('/')

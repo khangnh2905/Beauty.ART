@@ -21,9 +21,8 @@ export const NavbarRoutes = () => {
   const isCoursePage = pathname?.includes("/courses");
   const isSearchPage = pathname === "/search";
 
-  console.log(user)
+  console.log(user?.id)
 
-  const userIdFake = "user_2YOlq7jGyQw7axdgRg1NKBFUgUb"
   return (
     <>
       {isSearchPage && (
@@ -39,7 +38,7 @@ export const NavbarRoutes = () => {
               Exit
             </Button>
           </Link>
-        ) : isTeacher(userIdFake) ? (
+        ) : isTeacher(user?.id) ? (
           <Link href="/admin/courses">
             <Button size="sm" variant="ghost">
               Admin mode

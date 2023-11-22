@@ -6,14 +6,14 @@ import { Pencil, PlusCircle, ImageIcon } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Course } from "@prisma/client";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
+import { CourseFormType } from "@/type";
 
 interface ImageFormProps {
-  initialData: Course
+  initialData: CourseFormType
   courseId: string;
 };
 
@@ -26,6 +26,7 @@ const formSchema = z.object({
 export const ImageForm = ({
   initialData,
   courseId
+  
 }: ImageFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -35,7 +36,11 @@ export const ImageForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+
+      const imageUrl = values.imageUrl
+
+      const updateValue = {...initialData,imageUrl }
+      await axios.put(`https://localhost:7129/Course/Update?id=${courseId}`, updateValue);
       toast.success("Course updated");
       toggleEdit();
       router.refresh();
