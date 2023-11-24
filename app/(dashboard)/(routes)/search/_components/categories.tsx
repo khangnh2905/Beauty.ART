@@ -2,18 +2,13 @@
 
 import { Category } from "@prisma/client";
 import {
-  FcEngineering,
-  FcFilmReel,
-  FcMultipleDevices,
   FcMusic,
   FcOldTimeCamera,
-  FcSalesPerformance,
   FcSportsMode,
 } from "react-icons/fc";
 
 import {MdOutlineDraw } from "react-icons/md"
 import { IconType } from "react-icons";
-
 import { CategoryItem } from "./category-item";
 
 interface CategoriesProps {

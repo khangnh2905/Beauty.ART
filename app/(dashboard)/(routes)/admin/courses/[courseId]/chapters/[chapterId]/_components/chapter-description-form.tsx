@@ -54,7 +54,10 @@ export const ChapterDescriptionForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
+      const description = values.description
+      const updateValue = {...initialData, description}
+
+      await axios.put(`https://localhost:7129/api/Chapter?id=${chapterId}`, updateValue);
       toast.success("Chapter updated");
       toggleEdit();
       router.refresh();

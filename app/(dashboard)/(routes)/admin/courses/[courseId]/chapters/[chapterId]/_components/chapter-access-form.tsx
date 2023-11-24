@@ -48,7 +48,9 @@ export const ChapterAccessForm = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: 
+    
+    {
       isFree: !!initialData.isFree
     },
   });
@@ -58,10 +60,9 @@ export const ChapterAccessForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const isFree = values.isFree
-
       const updateValue = {...initialData,isFree }
 
-      await axios.put(`https://localhost:7129/api/Chapter?id=${chapterId}`, values);
+      await axios.put(`https://localhost:7129/api/Chapter?id=${chapterId}`, updateValue);
       toast.success("Chapter updated");
       toggleEdit();
       router.refresh();
