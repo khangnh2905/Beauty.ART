@@ -32,6 +32,7 @@ import axios from "axios";
 import { useModal } from "@/hooks/use-modal";
 // nextauth
 import { v4 as uuidv4 } from 'uuid';
+import toast from "react-hot-toast";
 
 export const SignUpSchema = z.object({
   name: z.string().min(2),
@@ -65,12 +66,12 @@ const SignUpModal = () => {
 
     try {
       await axios.post("https://localhost:7129/User/Register", valueForm);
-      //   toast.success("Đăng kí thành công");
+        toast.success("Đăng kí thành công");
       form.reset();
       onOpen("signIn", {});
     } catch (error) {
       console.log(error);
-      //   toast.error("Đăng kí thất bại");
+        toast.error("Đăng kí thất bại");
     }
   };
 

@@ -113,6 +113,8 @@ model Purchase {
   @@index([courseId])
 }
 
+tui ko noi den muxdât ỏ dau
+
 model StripeCustomer {
   id String @id @default(uuid())
   userId String @unique

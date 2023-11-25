@@ -38,6 +38,7 @@ export const LoginSchema = z.object({
 const LogInModal = () => {
   const { login } = useAuth();
 
+  // const [mounted, setMounted]
   const { isOpen, onOpen, onClose, type } = useModal();
   const isModalOpen = isOpen && type === "signIn";
 

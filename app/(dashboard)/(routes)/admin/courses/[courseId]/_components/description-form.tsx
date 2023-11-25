@@ -38,7 +38,7 @@ export const DescriptionForm = ({
   initialData,
   courseId
 }: DescriptionFormProps) => {
-  const { refetch } = useQuery({ queryKey: ["course"], });
+  const { refetch } = useQuery({ queryKey: ["course", courseId] });
 
   const [isEditing, setIsEditing] = useState(false);
 

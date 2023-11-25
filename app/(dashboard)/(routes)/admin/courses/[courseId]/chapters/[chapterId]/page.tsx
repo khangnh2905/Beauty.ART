@@ -24,14 +24,12 @@ const ChapterIdPage = ({
   const { data: chapter, isLoading: chapterLoading } = useQuery<any>({
     queryKey: [
       "chapter",
-      {
-        chapterId: params.chapterId,
-      },
+      params.chapterId,
     ],
     queryFn: () => fetchChapterById(params.chapterId),
   });
-console.log(chapter)
-  if(chapterLoading){
+  console.log(chapter)
+  if (chapterLoading) {
     return <div>...Loading</div>
   }
   // const chapter = await db.chapter.findUnique({

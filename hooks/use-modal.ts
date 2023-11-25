@@ -4,9 +4,11 @@ import { create } from "zustand"
 type ModalType = "payment" | "signIn" | "signUp"
 
 type CourseCheckout = {
+    id: string;
     title: string,
     courseId: string,
-    price: number
+    totalPrice: number,
+    userId : string
 }
 
 type ModalData = {

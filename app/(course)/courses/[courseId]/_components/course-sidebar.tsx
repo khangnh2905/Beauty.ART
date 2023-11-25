@@ -1,6 +1,5 @@
 'use client'
 
-import { auth } from "@clerk/nextjs";
 import { Chapter, Course, UserProgress } from "@prisma/client"
 import { redirect } from "next/navigation";
 
@@ -10,6 +9,8 @@ import { CourseProgress } from "@/components/course-progress";
 import { CourseSidebarItem } from "./course-sidebar-item";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPurchase } from "@/apis/page";
+import { useAuth } from "@/context/authContext";
+import { isTeacher } from "@/lib/teacher";
 
 interface CourseSidebarProps {
   course: Course & {
@@ -20,63 +21,88 @@ interface CourseSidebarProps {
 };
 
 
-export const CourseSidebar =  ({
+export const CourseSidebar = ({
   course,
 }: CourseSidebarProps) => {
-  // const { userId } = auth();
-  const userId = "user_2YOlq7jGyQw7axdgRg1NKBFUgUb";
-  // if (!userId) {
-  //   return redirect("/");
-  // }
+  const { user } = useAuth();
+  if (!user) {
+    return null;
+  }
 
-  console.log(course)
-  const purchaseFakeCourse = true;
-  // const { data: purchase, isLoading: purchaseLoading } = useQuery<any>({
-  //   queryKey: ["purchase", { userId: userId, courseId: course.id }],
-  //   queryFn: () => fetchPurchase(userId,course.id),
-  // });
-  // const purchase = await db.purchase.findUnique({
-  //   where: {
-  //     userId_courseId: {
-  //       userId,
-  //       courseId: course.id,
-  //     }
-  //   }
-  // });
+  const { data: purchase, isLoading: purchaseLoading } = useQuery<any>({
+    queryKey: ["purchase", { userId: user.id, courseId: course.id }],
+    queryFn: () => fetchPurchase(user.id, course.id),
+  });
 
-  // if(purchaseLoading){
-  //   return <div>...Loading</div>
-  // }
+  if (purchaseLoading) {
+    return <div>...Loading</div>;
+  }
+  const teacher: any = isTeacher(user?.id)
+
   return (
-    <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
-      <div className="p-8 flex flex-col border-b">
-        <h1 className="font-semibold">
-          {course.title}
-        </h1>
-        {purchaseFakeCourse && (
-          // <div className="mt-10">
-          //   <CourseProgress
-          //     variant="success"
-          //     value={progressCount}
-          //   />
-          // </div>
-          <></>
-        )}
-      </div>
-      <div className="flex flex-col w-full">
-        {course.chapters.map((chapter) => (
-          <CourseSidebarItem
-            key={chapter.id}
-            id={chapter.id}
-            label={chapter.title}
-            isCompleted={!!chapter.userProgress?.[0]?.isCompleted}
-            courseId={course.id}
-            isLocked={!chapter.isFree 
-              // && !purchase
-            }
-          />
-        ))}
-      </div>
+
+    <div>
+      {teacher ? (<div>
+        <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
+          <div className="p-8 flex flex-col border-b">
+            <h1 className="font-semibold">
+              {course.title}
+            </h1>
+            {teacher && (
+              // <div className="mt-10">
+              //   <CourseProgress
+              //     variant="success"
+              //     value={progressCount}
+              //   />
+              // </div>
+              <></>
+            )}
+          </div>
+          <div className="flex flex-col w-full">
+            {course.chapters.map((chapter) => (
+              <CourseSidebarItem
+                key={chapter.id}
+                id={chapter.id}
+                label={chapter.title}
+                isCompleted={!!chapter.userProgress?.[0]?.isCompleted}
+                courseId={course.id}
+                isLocked={!teacher}
+              />
+            ))}
+          </div>
+        </div>
+      </div>) : (
+        <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
+          <div className="p-8 flex flex-col border-b">
+            <h1 className="font-semibold">
+              {course.title}
+            </h1>
+            {purchase && (
+              // <div className="mt-10">
+              //   <CourseProgress
+              //     variant="success"
+              //     value={progressCount}
+              //   />
+              // </div>
+              <></>
+            )}
+          </div>
+          <div className="flex flex-col w-full">
+            {course.chapters.map((chapter) => (
+              <CourseSidebarItem
+                key={chapter.id}
+                id={chapter.id}
+                label={chapter.title}
+                isCompleted={!!chapter.userProgress?.[0]?.isCompleted}
+                courseId={course.id}
+                isLocked={!purchase}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
+
+
   )
 }

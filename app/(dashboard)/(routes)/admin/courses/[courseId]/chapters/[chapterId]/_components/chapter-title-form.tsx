@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChapterFormType } from "@/type";
+import { useQuery } from "@tanstack/react-query";
 
 interface ChapterTitleFormProps {
   initialData: ChapterFormType
@@ -36,6 +37,7 @@ export const ChapterTitleForm = ({
   chapterId,
 }: ChapterTitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const {refetch} = useQuery({ queryKey: ["chapter", chapterId]})
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
@@ -55,6 +57,7 @@ export const ChapterTitleForm = ({
       await axios.put(`https://localhost:7129/api/Chapter?id=${chapterId}`, updateValue);
       toast.success("Chapter updated");
       toggleEdit();
+      await refetch()
       router.refresh();
     } catch {
       toast.error("Something went wrong");

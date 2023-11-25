@@ -12,9 +12,11 @@ import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
+import { useQuery } from "@tanstack/react-query";
+import { ChapterFormType } from "@/type";
 
 interface ChapterVideoFormProps {
-  initialData: Chapter & { muxData?: MuxData | null };
+  initialData: ChapterFormType;
   courseId: string;
   chapterId: string;
 };
@@ -29,6 +31,7 @@ export const ChapterVideoForm = ({
   chapterId,
 }: ChapterVideoFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const {refetch} = useQuery({ queryKey: ["chapter", chapterId]})
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
@@ -36,9 +39,12 @@ export const ChapterVideoForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
+      const videoUrl = values.videoUrl
+      const updateValue = {...initialData, videoUrl}
+      await axios.put(`https://localhost:7129/api/Chapter?id=${chapterId}`, updateValue);
       toast.success("Chapter updated");
       toggleEdit();
+      await refetch()
       router.refresh();
     } catch {
       toast.error("Something went wrong");
@@ -75,7 +81,7 @@ export const ChapterVideoForm = ({
         ) : (
           <div className="relative aspect-video mt-2">
             <MuxPlayer
-              playbackId={initialData?.muxData?.playbackId || ""}
+              playbackId={initialData?.videoUrl || ""}
             />
           </div>
         )

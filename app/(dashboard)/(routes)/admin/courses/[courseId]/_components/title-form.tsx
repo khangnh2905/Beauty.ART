@@ -36,7 +36,7 @@ export const TitleForm = ({
   initialData,
   courseId
 }: TitleFormProps) => {
-  const {refetch} = useQuery({ queryKey: ["course"]})
+  const {refetch} = useQuery({ queryKey: ["course", courseId]})
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);

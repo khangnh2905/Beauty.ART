@@ -1,16 +1,22 @@
 'use client'
 
 import { useRouter } from "next/navigation";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
+
 
 export type User = {
     id: string;
     name: string;
     email: string;
     image: string;
-    // fullName: string;
-    // role: "STAFF" | "ADMIN" | "MANAGER";
+    address: string;
+    phone: string
 };
+
+
+
 
 type AuthContextType = {
     user: User | null;
@@ -25,10 +31,12 @@ export const useAuth = () => {
 }
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState(() => {
-            const user = window.localStorage.getItem("user");
-            return user ? JSON.parse(user) : null; 
+
+    const [user, setUser] = useState<User | null>(() => {
+        const user = window.localStorage.getItem("user");
+        return user ? JSON.parse(user) : null;
     });
+
     const router = useRouter();
     const login = async (email: string, password: string) => {
         try {
@@ -43,27 +51,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 }
             );
             if (response.ok) {
-                const user = await response.json();
-                console.log(user.userView)
-                setUser(user.userView);
-                window.localStorage.setItem("user", JSON.stringify(user));
-                // toast.success("Đăng nhập thành công")
+                const res = await response.json();
+                console.log(res.userView)
+                setUser(res.userView);
+                if (typeof window !== 'undefined') {
+                    window.localStorage.setItem("user", JSON.stringify(res.userView));
+                }
+                toast.success("Đăng nhập thành công")
+                router.refresh()
                 router.push('/')
             } else {
 
                 console.log("Login failed. Please check your credentials.");
-                // toast.error("Đăng nhập thất bại")
+                toast.error("Đăng nhập thất bại")
             }
         } catch (error) {
             console.log(error);
-            // toast.error("Đăng nhập thất bại")
+            toast.error("Đăng nhập thất bại")
 
         }
     };
 
     const logout = () => {
-        window.localStorage.removeItem("user");
-        setUser(null);
+        if(typeof window !== 'undefined'){
+            window.localStorage.removeItem("user");
+            setUser(null);
+        }
     };
 
     return (

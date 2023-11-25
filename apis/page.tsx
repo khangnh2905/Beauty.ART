@@ -9,6 +9,11 @@ export async function fetchCourseById(courseId: string): Promise<any> {
   return res.data;
 }
 
+export async function fetchCoursesByUserID(userId: string): Promise<any> {
+  const res = await axios.get(`https://localhost:7129/Course/GetCourseByUserId?userId=${userId}`);
+  return res.data;
+}
+
 export async function fetchCategory(): Promise<any> {
   const res = await axios.get(`https://localhost:7129/api/Category/GetCategories`);
   return res.data;
@@ -32,15 +37,35 @@ export async function fetchChapterById(
   return res.data;
 }
 
-export async function fetchMuxVideoData(chapterId: string) {
-  const res = await axios.get(
-    `http://localhost:3001/muxData?chapterId=${chapterId}`
-  );
-  return res.data;
-}
+// export async function fetchMuxVideoData(chapterId: string) {
+//   const res = await axios.get(
+//     `http://localhost:3001/muxData?chapterId=${chapterId}`
+//   );
+//   return res.data;
+// }
 export async function fetchPurchase(userId: string, courseId: string) {
-  const res = await axios.get(
-    `http://localhost:3001/purchase?userId=${userId}&courseId=${courseId}`
-  );
-  return res.data;
+  try {
+    const res = await axios.get(
+      `https://localhost:7129/User/CheckUserBoughtCourse?userId=${userId}&courseId=${courseId}`
+    );
+    console.log(userId)
+    console.log(courseId)
+    return res.data;
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getAnalyticDashboard() : Promise<any> {
+  try {
+    const res = await axios.get(
+      'https://localhost:7129/api/Payment/TotalSale'
+    );
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error)
+  }
+
+  
 }

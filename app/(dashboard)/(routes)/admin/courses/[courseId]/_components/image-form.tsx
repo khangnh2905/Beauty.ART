@@ -11,6 +11,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 import { CourseFormType } from "@/type";
+import { useQuery } from "@tanstack/react-query";
 
 interface ImageFormProps {
   initialData: CourseFormType
@@ -29,7 +30,7 @@ export const ImageForm = ({
   
 }: ImageFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
-
+  const {refetch} = useQuery({ queryKey: ["course", courseId]})
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const router = useRouter();
@@ -43,6 +44,7 @@ export const ImageForm = ({
       await axios.put(`https://localhost:7129/Course/Update?id=${courseId}`, updateValue);
       toast.success("Course updated");
       toggleEdit();
+      await refetch()
       router.refresh();
     } catch {
       toast.error("Something went wrong");

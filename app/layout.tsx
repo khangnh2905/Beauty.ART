@@ -37,10 +37,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <AuthProvider>
+    <AuthProvider>
       <QueryProvider>
-        <StoreProvider/>
+        <StoreProvider />
         <html lang="en">
           <body className={inter.className}>
             <ConfettiProvider />
@@ -49,7 +48,6 @@ export default function RootLayout({
           </body>
         </html>
       </QueryProvider>
-      </AuthProvider>
-    </ClerkProvider>
+    </AuthProvider>
   );
 }

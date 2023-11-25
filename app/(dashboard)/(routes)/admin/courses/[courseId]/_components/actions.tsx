@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 import { useConfettiStore } from "@/hooks/use-confetti-store";
+import { useQuery } from "@tanstack/react-query";
 
 interface ActionsProps {
   disabled: boolean;
@@ -24,7 +25,7 @@ export const Actions = ({
   const router = useRouter();
   const confetti = useConfettiStore();
   const [isLoading, setIsLoading] = useState(false);
-
+  const {refetch} = useQuery({ queryKey: ["course", courseId]})
   const onClick = async () => {
     try {
       setIsLoading(true);
@@ -37,7 +38,7 @@ export const Actions = ({
         toast.success("Course published");
         confetti.onOpen();
       }
-
+      await refetch()
       router.refresh();
     } catch {
       toast.error("Something went wrong");

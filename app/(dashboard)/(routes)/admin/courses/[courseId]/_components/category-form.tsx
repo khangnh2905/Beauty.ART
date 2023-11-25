@@ -39,7 +39,7 @@ export const CategoryForm = ({
   courseId,
   options,
 }: CategoryFormProps) => {
-  const {refetch} = useQuery({ queryKey: ["course"]})
+  const { refetch } = useQuery({ queryKey: ["course", courseId] })
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -48,17 +48,16 @@ export const CategoryForm = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      categoryId: initialData?.categoryId || ""
-    },
+    defaultValues:  initialData
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const category = values.categoryId
-      const updateValue = {...initialData, category}
+      const categoryId = values.categoryId
+      const updateValue = { ...initialData, categoryId }
+      console.log(updateValue)
 
       await axios.put(`https://localhost:7129/Course/Update?id=${courseId}`, updateValue);
       toast.success("Course updated");
@@ -71,7 +70,7 @@ export const CategoryForm = ({
   }
 
   const selectedOption = options.find((option) => option.value === initialData.categoryId);
-
+console.log(selectedOption)
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">

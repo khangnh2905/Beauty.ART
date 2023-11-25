@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
+import { useQuery } from "@tanstack/react-query";
 
 interface ChapterActionsProps {
   disabled: boolean;
@@ -24,19 +25,20 @@ export const ChapterActions = ({
 }: ChapterActionsProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { refetch } = useQuery({ queryKey: ["chapter", chapterId] })
 
   const onClick = async () => {
     try {
       setIsLoading(true);
 
-      // if (isPublished) {
-      //   await axios.put(`https://localhost:7129/api/Chapter/UpdateChapterStatus?id=${chapterId}/unpublish`);
-      //   toast.success("Chapter unpublished");
-      // } else {
-        await axios.put(`https://localhost:7129/api/Chapter/UpdateChapterStatus?id=${chapterId}/publish`);
+      if (isPublished) {
+        await axios.put(`'https://localhost:7129/api/Chapter/UpdateUnPublishChapter?id${chapterId}`);
+        toast.success("Chapter unpublished");
+      } else {
+        await axios.put(`https://localhost:7129/api/Chapter/UpdateChapterStatus?id=${chapterId}`);
         toast.success("Chapter published");
-      // }
-
+      }
+      await refetch()
       router.refresh();
     } catch {
       toast.error("Something went wrong");
@@ -44,7 +46,7 @@ export const ChapterActions = ({
       setIsLoading(false);
     }
   }
-  
+
   const onDelete = async () => {
     try {
       setIsLoading(true);

@@ -9,8 +9,10 @@ const StoreProvider = () => {
 
     const [mounted, setMounted] = useState(false)
 
+
     useEffect(() => {
         setMounted(true)
+        console.log("Component is mount")
     },[])
 
     if (!mounted) {

@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Editor } from "@/components/editor";
 import { Preview } from "@/components/preview";
+import { useQuery } from "@tanstack/react-query";
 
 interface ChapterDescriptionFormProps {
   initialData: Chapter;
@@ -38,6 +39,7 @@ export const ChapterDescriptionForm = ({
   chapterId
 }: ChapterDescriptionFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const {refetch} = useQuery({ queryKey: ["chapter", chapterId]})
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
@@ -60,6 +62,7 @@ export const ChapterDescriptionForm = ({
       await axios.put(`https://localhost:7129/api/Chapter?id=${chapterId}`, updateValue);
       toast.success("Chapter updated");
       toggleEdit();
+      await refetch()
       router.refresh();
     } catch {
       toast.error("Something went wrong");

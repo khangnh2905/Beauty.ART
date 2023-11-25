@@ -24,6 +24,7 @@ import { Editor } from "@/components/editor";
 import { Preview } from "@/components/preview";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ChapterFormType } from "@/type";
+import { useQuery } from "@tanstack/react-query";
 
 interface ChapterAccessFormProps {
   initialData: ChapterFormType;
@@ -41,6 +42,7 @@ export const ChapterAccessForm = ({
   chapterId
 }: ChapterAccessFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const {refetch} = useQuery({ queryKey: ["chapter", chapterId]})
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
@@ -66,6 +68,7 @@ export const ChapterAccessForm = ({
       toast.success("Chapter updated");
       toggleEdit();
       router.refresh();
+      await refetch()
     } catch {
       toast.error("Something went wrong");
     }

@@ -1,42 +1,64 @@
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
 
-import { getAnalytics } from "@/actions/get-analytics";
+'use client'
+import React, { useEffect, useState } from 'react';
 
-import { DataCard } from "./_components/data-card";
-import { Chart } from "./_components/chart";
+import { useQuery } from '@tanstack/react-query';
+import { getAnalyticDashboard } from '@/apis/page';
 
-const AnalyticsPage = async () => {
-  const { userId } = auth();
 
-  if (!userId) {
-    return redirect("/");
+
+// ... (import statements)
+
+const AnalyticsPage: React.FC = () => {
+  const { data: analyticDashboard, isLoading: analyticLoading } = useQuery({
+    queryKey: ["analytics"],
+    queryFn: getAnalyticDashboard,
+  });
+
+  if (analyticLoading) {
+    return <div>Loading...</div>;
   }
 
-  const {
-    data,
-    totalRevenue,
-    totalSales,
-  } = await getAnalytics(userId);
-
-  return ( 
-    <div className="p-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <DataCard
-          label="Total Revenue"
-          value={totalRevenue}
-          shouldFormat
-        />
-        <DataCard
-          label="Total Sales"
-          value={totalSales}
-        />
+  console.log(analyticDashboard);
+  return (
+    <div>
+      <h1 style={{ fontSize: '2em', textAlign: 'center', fontWeight: 'bold', marginBottom: '20px' }}>Admin Analytics Page</h1>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ 
+          border: '1px solid #ccc', 
+          padding: '100px', 
+          marginRight: '80px', 
+          backgroundColor: 'green', 
+          color: 'white',
+          borderRadius: '30px', 
+          boxShadow: '0 0 30 rgba(0, 0, 0, 0.5)' 
+        }}>
+          <p style={{ margin: '0', fontWeight: 'bold', fontSize: '1.2em' }}>Total Sale: {analyticDashboard.total}</p>
+        </div>
+        <div style={{ 
+          border: '1px solid #ccc', 
+          padding: '100px', 
+          marginLeft: '80px', 
+          backgroundColor: 'orange',
+          borderRadius: '30px', 
+          boxShadow: '0 0 30 rgba(0, 0, 0, 0.5)'  
+        }}>
+          <p style={{ margin: '0', fontWeight: 'bold', fontSize: '1.2em' }}>Order: {analyticDashboard.count}</p>
+        </div>
       </div>
-      <Chart
-        data={data}
-      />
     </div>
-   );
-}
- 
+  );
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+};
+
 export default AnalyticsPage;
+

@@ -14,20 +14,24 @@ import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useModal } from "@/hooks/use-modal";
+import axios from "axios";
 
 const PaymentModal = () => {
   const { isOpen, type, onClose, data } = useModal();
 
   const isModalOpen = isOpen && type === "payment";
-
+if(!data) return null;
   const handleCheckOut = async () => {
     //TO DO TO CHECKOUT
+    const courseId = data.courseCheckout?.courseId;
+    const id = data.courseCheckout?.id;
+    const totalPrice = data.courseCheckout?.totalPrice
+    const userId = data.courseCheckout?.userId
 
+    const value = {courseId, id, totalPrice, userId}
     //price title courseId
-
-    //const value = {price, title ,courseId}
+    await axios.post(`https://localhost:7129/api/Order`, value)
     // await axios.post("url" , value)
-    console.log("click to checkout");
   };
 
   return (
@@ -42,7 +46,7 @@ const PaymentModal = () => {
           </div>
 
           <span> Tên khóa học : {data?.courseCheckout?.title}</span>
-          <span> Giá :{data?.courseCheckout?.price}</span>
+          <span> Giá :{data?.courseCheckout?.totalPrice}</span>
         </div>
 
         <DialogFooter>

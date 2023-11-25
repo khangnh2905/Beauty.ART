@@ -40,7 +40,7 @@ export const ChaptersForm = ({
 }: ChaptersFormProps) => {
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  const {refetch} = useQuery({ queryKey: ["course"]})
+  const {refetch} = useQuery({ queryKey: ["course", courseId]})
   const toggleCreating = () => {
     setIsCreating((current) => !current);
   }

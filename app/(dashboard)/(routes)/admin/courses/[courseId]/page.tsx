@@ -25,6 +25,7 @@ const CourseIdPage = ({ params }: { params: { courseId: string } }) => {
   const { data: course, isLoading: courseLoading } = useQuery<any>({
     queryKey: ["course", params.courseId],
     queryFn: () => fetchCourseById(params.courseId),
+    staleTime : 1000* 60 /10
   });
   const { data: categories, isLoading: categoryLoading } = useQuery<any>({
     queryKey: ["categories"],
@@ -34,7 +35,7 @@ const CourseIdPage = ({ params }: { params: { courseId: string } }) => {
     return <div>...Loading</div>;
   }
 
-  console.log(course)
+  // console.log(course)
 
   const requiredFields = [
     course.title,
