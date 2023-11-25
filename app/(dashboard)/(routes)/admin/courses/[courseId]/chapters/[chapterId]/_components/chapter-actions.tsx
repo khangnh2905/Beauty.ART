@@ -29,13 +29,13 @@ export const ChapterActions = ({
     try {
       setIsLoading(true);
 
-      if (isPublished) {
-        await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/unpublish`);
-        toast.success("Chapter unpublished");
-      } else {
-        await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/publish`);
+      // if (isPublished) {
+      //   await axios.put(`https://localhost:7129/api/Chapter/UpdateChapterStatus?id=${chapterId}/unpublish`);
+      //   toast.success("Chapter unpublished");
+      // } else {
+        await axios.put(`https://localhost:7129/api/Chapter/UpdateChapterStatus?id=${chapterId}/publish`);
         toast.success("Chapter published");
-      }
+      // }
 
       router.refresh();
     } catch {

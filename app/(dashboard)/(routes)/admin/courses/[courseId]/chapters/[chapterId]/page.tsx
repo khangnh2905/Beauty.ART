@@ -59,7 +59,7 @@ console.log(chapter)
 
   return (
     <>
-      {!chapter.isPublished && (
+      {!chapter.isPulished && (
         <Banner
           variant="warning"
           label="This chapter is unpublished. It will not be visible in the course"
@@ -86,7 +86,7 @@ console.log(chapter)
                 disabled={!isComplete}
                 courseId={params.courseId}
                 chapterId={params.chapterId}
-                isPublished={chapter.isPublished}
+                isPublished={chapter.isPulished}
               />
             </div>
           </div>

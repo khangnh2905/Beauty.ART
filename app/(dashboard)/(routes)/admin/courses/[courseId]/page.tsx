@@ -42,7 +42,7 @@ const CourseIdPage = ({ params }: { params: { courseId: string } }) => {
     course.imageUrl,
     course.price,
     course.categoryId,
-    course?.chapters?.some((chapter: any) => chapter.isPublished),
+    course?.chapters?.some((chapter: any) => chapter.isPulished),
   ];
 
   const totalFields = requiredFields.length;
@@ -54,7 +54,7 @@ const CourseIdPage = ({ params }: { params: { courseId: string } }) => {
 
   return (
     <>
-      {!course.isPublished && (
+      {!course.isPulished && (
         <Banner label="This course is unpublished. It will not be visible to the students." />
       )}
       <div className="p-6">
@@ -68,7 +68,7 @@ const CourseIdPage = ({ params }: { params: { courseId: string } }) => {
           <Actions
             disabled={!isComplete}
             courseId={params.courseId}
-            isPublished={course.isPublished}
+            isPublished={course.isPulished}
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">

@@ -30,10 +30,10 @@ export const Actions = ({
       setIsLoading(true);
 
       if (isPublished) {
-        await axios.patch(`/api/courses/${courseId}/unpublish`);
+        await axios.put(`https://localhost:7129/Course/UpdateUnPublishCourse?id=${courseId}`);
         toast.success("Course unpublished");
       } else {
-        await axios.patch(`/api/courses/${courseId}/publish`);
+        await axios.put(`https://localhost:7129/Course/UpdateCourseStatus?id=${courseId}`);
         toast.success("Course published");
         confetti.onOpen();
       }
