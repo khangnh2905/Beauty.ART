@@ -37,19 +37,11 @@ export async function fetchChapterById(
   return res.data;
 }
 
-// export async function fetchMuxVideoData(chapterId: string) {
-//   const res = await axios.get(
-//     `http://localhost:3001/muxData?chapterId=${chapterId}`
-//   );
-//   return res.data;
-// }
 export async function fetchPurchase(userId: string, courseId: string) {
   try {
     const res = await axios.get(
       `https://localhost:7129/User/CheckUserBoughtCourse?userId=${userId}&courseId=${courseId}`
     );
-    console.log(userId)
-    console.log(courseId)
     return res.data;
   } catch (error) {
     console.log(error)
