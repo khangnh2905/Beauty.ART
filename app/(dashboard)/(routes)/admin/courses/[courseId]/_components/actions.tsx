@@ -51,11 +51,11 @@ export const Actions = ({
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/courses/${courseId}`);
+      await axios.delete(`https://localhost:7129/Course/Delete?id=${courseId}`);
 
       toast.success("Course deleted");
       router.refresh();
-      router.push(`/teacher/courses`);
+      router.push(`/admin/courses`);
     } catch {
       toast.error("Something went wrong");
     } finally {
